@@ -2,15 +2,19 @@ using UnityEngine;
 
 public class PowerUp : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    private bool powerUpEnabled = false;
+    private int powerUpDuration;
 
     // Update is called once per frame
     void Update()
     {
         
     }
+
+    private void LifeExtender()
+    {
+        
+    }
+
+
 }
