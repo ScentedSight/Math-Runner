@@ -3,32 +3,44 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    public InputAction playerInput;
-    private Vector2 controllerInput;
-    public Rigidbody rb;
-    public int health = 1;
-    [SerializeField] float jumpForce;
-    private int currentLane = 0;
+    public float jumpForce;
+    private Rigidbody rb;
     private bool grounded = true;
-    private Animation animator;
+    public float changeLaneSpeed = 10f;
+    private float targetX;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        playerInput.Enable();
+        
+    }
+    
+    void Awake()
+    {
+        rb = GetComponent<Rigidbody>();
+
+        // Player initially wants to remain wherever it currently is.
+        targetX = transform.position.x;
     }
 
     // Update is called once per frame
     void Update()
     {
-        controllerInput = playerInput.ReadValue<Vector2>();
-        if (controllerInput.x > 0 && currentLane < 4)
+        Vector3 targetPosition = new Vector3(targetX,transform.position.y,transform.position.z);
+        transform.position = Vector3.MoveTowards(transform.position, targetPosition, changeLaneSpeed * Time.deltaTime); 
+
+        if (Keyboard.current.aKey.wasPressedThisFrame)
+        {
+            DashLeft();
+        }
+        else if (Keyboard.current.dKey.wasPressedThisFrame)
         {
             DashRight();
         }
-        else if (controllerInput.x < 0 && currentLane > -4)
+
+        if (Keyboard.current.spaceKey.wasPressedThisFrame)
         {
-            DashLeft();
+            Jump();
         }
     }
 
@@ -41,14 +53,14 @@ public class PlayerController : MonoBehaviour
         } 
     }
 
-    private void DashLeft()
+    public void DashLeft()
     {
-        currentLane--;
+        targetX = RoadLoop.leftLaneX;
     }
 
-    private void DashRight()
+    public void DashRight()
     {
-        currentLane++;
+        targetX = RoadLoop.rightLaneX;
     }
 
     void OnCollisionEnter(Collision collision)
@@ -63,8 +75,7 @@ public class PlayerController : MonoBehaviour
     {
         if (other.CompareTag("Obstacle"))
         {
-            GameManager.GameOver();
-        }
-        
+            GetComponent<GameManager>().GameOver();
+        }  
     }
 }
