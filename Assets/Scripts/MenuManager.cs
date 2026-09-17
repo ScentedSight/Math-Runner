@@ -8,6 +8,8 @@ public class MenuManager : MonoBehaviour
     [SerializeField] private Button startButton;
     [SerializeField] private Button quitButton;
     [SerializeField] private Button restartButton;
+    [SerializeField] private Button pauseButton;
+    [SerializeField] private Button unpauseButton;
     [SerializeField] private GameObject startScreen;
     [SerializeField] private GameObject pauseScreen;
     [SerializeField] private GameObject endScreen;
@@ -26,8 +28,10 @@ public class MenuManager : MonoBehaviour
     {
         Time.timeScale = 0f;
         pauseScreen.SetActive(true);
+        unpauseButton.gameObject.SetActive(true);
         restartButton.gameObject.SetActive(true);
         quitButton.gameObject.SetActive(true);
+        pauseButton.gameObject.SetActive(false);
     }
 
     public void EndScreen()
@@ -36,6 +40,7 @@ public class MenuManager : MonoBehaviour
         endScreen.SetActive(true);
         restartButton.gameObject.SetActive(true);
         quitButton.gameObject.SetActive(true);
+        pauseButton.gameObject.SetActive(false);
     }
 
     public void Restart()
@@ -53,8 +58,19 @@ public class MenuManager : MonoBehaviour
     public void GameStart()
     {
         gameManager.StartGame();
+        pauseButton.gameObject.SetActive(true);
         startScreen.SetActive(false);
         startButton.gameObject.SetActive(false);
         quitButton.gameObject.SetActive(false);
+    }
+
+    public void Continue()
+    {
+        Time.timeScale = 1f;
+        pauseScreen.SetActive(false);
+        restartButton.gameObject.SetActive(false);
+        quitButton.gameObject.SetActive(false);
+        pauseButton.gameObject.SetActive(true);
+        unpauseButton.gameObject.SetActive(false);
     }
 }

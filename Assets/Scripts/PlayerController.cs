@@ -3,16 +3,23 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    public float jumpForce;
+    public float jumpForce = 1250f;
+    public float changeLaneSpeed = 35f;
+    private float targetX;
+    public int currentLane;
     private Rigidbody rb;
     private bool grounded = true;
-    public float changeLaneSpeed = 10f;
-    private float targetX;
+    [SerializeField] private float gravity = -40f;
+    [SerializeField] private GameManager gameManager;
+
+    void Start()
+    {
+        Physics.gravity = new Vector3(0f, gravity, 0f);
+    }
 
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
-
         // Player initially wants to remain wherever it currently is.
         targetX = transform.position.x;
     }
@@ -49,11 +56,13 @@ public class PlayerController : MonoBehaviour
 
     public void DashLeft()
     {
+        currentLane = 0;
         targetX = RoadLoop.leftLaneX;
     }
 
     public void DashRight()
     {
+        currentLane = 1;
         targetX = RoadLoop.rightLaneX;
     }
 
@@ -69,7 +78,7 @@ public class PlayerController : MonoBehaviour
     {
         if (other.CompareTag("Obstacle"))
         {
-            GetComponent<GameManager>().GameOver();
+           gameManager.GameOver();
         }  
     }
 }

@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     private SaveManager saveManager;
     public PlayerController player;
     public MenuManager gameUI;
+    public SpawnManager spawnManager;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -47,7 +48,7 @@ public class GameManager : MonoBehaviour
         {
             player.DashRight();
         }
-
+        spawnManager.StartSpawning();
         StartCoroutine(AnswerTimer(levelDuration));
     }
 
@@ -69,12 +70,12 @@ public class GameManager : MonoBehaviour
 
     private bool CheckAnswer()
     {
-        if (dialogueManager.randomSide == 0 && player.transform.position.x > 0)
+        if (dialogueManager.randomSide == player.currentLane)
         {
             return true;
         }
 
-        if (dialogueManager.randomSide == 1 && player.transform.position.x < 0)
+        if (dialogueManager.randomSide == player.currentLane)
         {
             return true;
         }
@@ -86,6 +87,7 @@ public class GameManager : MonoBehaviour
     {
         currentLevel++;
         SetLevelDuration();
+        spawnManager.SetBarricadeSpawnRate(currentLevel);
         StartCoroutine(AnswerTimer(levelDuration));
     }
 
