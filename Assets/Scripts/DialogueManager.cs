@@ -10,29 +10,7 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] private TMP_Text questions_label;
     [SerializeField] private TMP_Text leftAnswer;
     [SerializeField] private TMP_Text rightAnswer;
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-
-    void Awake()
-    {
-        
-    }
-
-    void OnEnable()
-    {
-        
-    }
+    [SerializeField] private GameManager gameManager;
 
     public void GenerateQuestion()
     {
@@ -45,11 +23,11 @@ public class DialogueManager : MonoBehaviour
         // 3 = ÷
         int operatorIndex;
 
-        if (GameManager.currentLevel <= 10)
+        if (gameManager.currentLevel <= 10)
         {
             operatorIndex = Random.Range(0, 2);
         }
-        else if (GameManager.currentLevel <= 20)
+        else if (gameManager.currentLevel <= 20)
         {
             operatorIndex = Random.Range(0, 3);
         }

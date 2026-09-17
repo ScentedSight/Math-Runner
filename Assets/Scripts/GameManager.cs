@@ -1,38 +1,27 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    public static bool gameOver = false;
-    public static float levelDuration = 10f;
-    public static int score;
-    public static int highScore;
-    public static int currentLevel = 1;
+    public bool gameOver = false;
+    public float levelDuration = 10f;
+    public int score;
+    public int highScore;
+    public int currentLevel = 1;
     private float time;
+
     public DialogueManager dialogueManager;
     private SaveManager saveManager;
     public PlayerController player;
-    public SceneManager scenes;
     public MenuManager gameUI;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        //SceneManager.LoadScene();
-        saveManager = GetComponent<SaveManager>();
-
-        int randomStart = Random.Range(0, 2);
-        if (randomStart == 0)
-        {
-            player.DashLeft();
-        }
-        else
-        {
-            player.DashRight();
-        }
-
-        StartCoroutine(AnswerTimer(levelDuration));
+        SaveManager saveManager = GetComponent<SaveManager>();
+        highScore = saveManager.LoadHighScore();
+        gameUI.scores.text = $"Highscore: {highScore}\nScore: {score}";
+        gameUI.StartScreen();
     }
 
     // Update is called once per frame
@@ -45,11 +34,32 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void StartGame()
+    {
+        Time.timeScale = 1f;
+        int randomStart = Random.Range(0, 2);
+
+        if (randomStart == 0)
+        {
+            player.DashLeft();
+        }
+        else
+        {
+            player.DashRight();
+        }
+
+        StartCoroutine(AnswerTimer(levelDuration));
+    }
+
     public void GameOver()
     {
         gameOver = true;
-        saveManager.SaveHighScore(score);
-        Time.timeScale = 0; //totally pause the game
+        if (score > highScore)
+        {
+            highScore = score;
+            saveManager.SaveHighScore(highScore);
+        }
+        gameUI.EndScreen();
     }
 
     private void UpdateScore()

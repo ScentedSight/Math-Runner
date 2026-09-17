@@ -31,14 +31,4 @@ public class RoadLoop : MonoBehaviour
             transform.position = startPos;
         }
     }
-
-    void Awake()
-    {
-        
-    }
-
-    void OnEnable()
-    {
-        
-    }
 }

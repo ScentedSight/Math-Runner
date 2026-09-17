@@ -1,16 +1,60 @@
+using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MenuManager : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [SerializeField] private Button startButton;
+    [SerializeField] private Button quitButton;
+    [SerializeField] private Button restartButton;
+    [SerializeField] private GameObject startScreen;
+    [SerializeField] private GameObject pauseScreen;
+    [SerializeField] private GameObject endScreen;
+    [SerializeField] private GameManager gameManager;
+    public TMP_Text scores;
+
+    public void StartScreen()
     {
-        
+        Time.timeScale = 0f;
+        startScreen.SetActive(true);
+        startButton.gameObject.SetActive(true);
+        quitButton.gameObject.SetActive(true);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void PauseScreen()
     {
-        
+        Time.timeScale = 0f;
+        pauseScreen.SetActive(true);
+        restartButton.gameObject.SetActive(true);
+        quitButton.gameObject.SetActive(true);
+    }
+
+    public void EndScreen()
+    {
+        Time.timeScale = 0f;
+        endScreen.SetActive(true);
+        restartButton.gameObject.SetActive(true);
+        quitButton.gameObject.SetActive(true);
+    }
+
+    public void Restart()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        gameManager.StartGame();
+    }
+
+    public void Quit()
+    {
+        Application.Quit();
+    }
+
+    public void GameStart()
+    {
+        gameManager.StartGame();
+        startScreen.SetActive(false);
+        startButton.gameObject.SetActive(false);
+        quitButton.gameObject.SetActive(false);
     }
 }

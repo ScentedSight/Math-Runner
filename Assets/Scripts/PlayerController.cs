@@ -9,12 +9,6 @@ public class PlayerController : MonoBehaviour
     public float changeLaneSpeed = 10f;
     private float targetX;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-    
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -26,7 +20,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Vector3 targetPosition = new Vector3(targetX,transform.position.y,transform.position.z);
+        Vector3 targetPosition = new Vector3(targetX, transform.position.y, transform.position.z);
         transform.position = Vector3.MoveTowards(transform.position, targetPosition, changeLaneSpeed * Time.deltaTime); 
 
         if (Keyboard.current.aKey.wasPressedThisFrame)
