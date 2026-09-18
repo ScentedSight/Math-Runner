@@ -5,8 +5,9 @@ public class PlayerController : MonoBehaviour
 {
     public float jumpForce = 1250f;
     public float changeLaneSpeed = 35f;
-    private float targetX;
     public int currentLane;
+    public int health = 1;
+    private float targetX;
     private Rigidbody rb;
     private bool grounded = true;
     [SerializeField] private float gravity = -40f;
@@ -14,7 +15,7 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-        Physics.gravity = new Vector3(0f, gravity, 0f);
+        Physics.gravity = new Vector3(0f, gravity, 0f); //Custom gravity to configure jump's curve
     }
 
     void Awake()
@@ -47,6 +48,7 @@ public class PlayerController : MonoBehaviour
 
     private void Jump()
     {
+        //Check if grounded first to avoid double jumping
         if (grounded == true)
         {
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
@@ -76,9 +78,19 @@ public class PlayerController : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Obstacle"))
+        if (other.CompareTag("Obstacle") && health == 1)
         {
-           gameManager.GameOver();
-        }  
+            gameManager.GameOver();
+        }
+        else if (other.CompareTag("Obstacle"))
+        {
+            health --;
+        }
+
+        if (other.CompareTag("PowerUp"))
+        {
+            health++;
+            Destroy(other.gameObject);
+        }
     }
 }

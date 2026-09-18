@@ -11,10 +11,11 @@ public class RoadLoop : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        //Finding x value from one end of the ground to another
         BoxCollider boxCoordinates = GetComponent<BoxCollider>();
         float leftEdge = boxCoordinates.bounds.max.x;
         float rightEdge = boxCoordinates.bounds.min.x;
-        
+        //Setting definite path for player's input traversal
         leftLaneX = leftEdge / 2f;
         rightLaneX = rightEdge / 2f;
         startPos = transform.position;
@@ -24,6 +25,7 @@ public class RoadLoop : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //Looping the floor towards the player by repeatWidth
         transform.Translate(Vector3.forward * loopSpeed * Time.deltaTime);
 
         if (transform.position.z > repeatWidth)

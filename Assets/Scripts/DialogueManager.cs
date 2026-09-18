@@ -22,7 +22,7 @@ public class DialogueManager : MonoBehaviour
         // 2 = ×
         // 3 = ÷
         int operatorIndex;
-
+        
         if (gameManager.currentLevel <= 10)
         {
             operatorIndex = Random.Range(0, 2);
@@ -35,7 +35,7 @@ public class DialogueManager : MonoBehaviour
         {
             operatorIndex = Random.Range(0, 4);
         }
-
+        //Using diff math operators for different difficulties
         switch (operatorIndex)
         {
             case 0:
@@ -63,7 +63,7 @@ public class DialogueManager : MonoBehaviour
                 questions = dividend + " ÷ " + divisor + "?";
                 break;
         }
-
+        //Provide value for diff ans
         do
         {
             wrongAnswer = correctAnswer + Random.Range(-5, 6);

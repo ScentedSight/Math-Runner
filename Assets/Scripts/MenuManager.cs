@@ -14,6 +14,7 @@ public class MenuManager : MonoBehaviour
     [SerializeField] private GameObject pauseScreen;
     [SerializeField] private GameObject endScreen;
     [SerializeField] private GameManager gameManager;
+    public Slider progressBar;
     public TMP_Text scores;
 
     public void StartScreen()
@@ -62,6 +63,7 @@ public class MenuManager : MonoBehaviour
         startScreen.SetActive(false);
         startButton.gameObject.SetActive(false);
         quitButton.gameObject.SetActive(false);
+        progressBar.gameObject.SetActive(true);
     }
 
     public void Continue()
