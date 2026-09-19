@@ -10,8 +10,12 @@ public class PlayerController : MonoBehaviour
     private float targetX;
     private Rigidbody rb;
     private bool grounded = true;
+    private Quaternion carDefaultRotation;
     [SerializeField] private float gravity = -40f;
     [SerializeField] private GameManager gameManager;
+    [SerializeField] private Transform carModel;
+    [SerializeField] private float turnAngle = 20f;
+    [SerializeField] private float rotationSpeed = 8f;
 
     void Awake()
     {
@@ -19,6 +23,8 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         // Player initially wants to remain wherever it currently is.
         targetX = transform.position.x;
+        // Remember whatever rotation you set in the Inspector
+        carDefaultRotation = carModel.localRotation;
     }
 
     // Update is called once per frame
@@ -26,6 +32,19 @@ public class PlayerController : MonoBehaviour
     {
         Vector3 targetPosition = new Vector3(targetX, transform.position.y, transform.position.z);
         transform.position = Vector3.MoveTowards(transform.position, targetPosition, changeLaneSpeed * Time.deltaTime); 
+
+        // Determine which direction we're moving
+        float difference = targetX - transform.position.x;
+        float targetAngle = 0f;
+
+        if (Mathf.Abs(difference) > 0.01f)
+        {
+            targetAngle = difference < 0 ? turnAngle : -turnAngle;
+        }
+
+        Quaternion steeringRotation = Quaternion.Euler(0f, targetAngle, 0f);
+        Quaternion targetRotation = steeringRotation * carDefaultRotation;
+        carModel.localRotation = Quaternion.Lerp(carModel.localRotation, targetRotation, rotationSpeed * Time.deltaTime);
 
         if (Keyboard.current.aKey.wasPressedThisFrame)
         {
