@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class BarricadeManager : MonoBehaviour
 {
-    [SerializeField] private float moveSpeed;
+    private float moveSpeed;
 
     void Awake()
     {

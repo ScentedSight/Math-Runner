@@ -7,10 +7,37 @@ public class DialogueManager : MonoBehaviour
     private int correctAnswer;
     private int wrongAnswer;
     public int randomSide;
+    private float moveSpeed;
+
     [SerializeField] private TMP_Text questions_label;
     [SerializeField] private TMP_Text leftAnswer;
     [SerializeField] private TMP_Text rightAnswer;
     [SerializeField] private GameManager gameManager;
+
+    void Awake()
+    {
+        gameManager = FindAnyObjectByType<GameManager>();
+    }
+
+    void OnEnable()
+    {
+        float distance = Mathf.Abs(gameManager.spawnManager.transform.position.z - gameManager.player.transform.position.z);
+        moveSpeed = distance / gameManager.levelDuration;
+    }
+
+    void Update()
+    {
+        if (CompareTag("AnsSignboard"))
+        {
+            //Moving the answer signboard towards the player
+            transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime, Space.World);
+            //Destroy out of bound objects
+            if (transform.position.z > 80)
+            {
+                Destroy(gameObject);
+            }          
+        }
+    }
 
     public void GenerateQuestion()
     {
@@ -71,24 +98,24 @@ public class DialogueManager : MonoBehaviour
         while (wrongAnswer == correctAnswer);
     }
 
-    public void DisplayAnswers()
+    public void DisplayAnswers(DialogueManager answerParameter)
     {
         questions_label.gameObject.SetActive(true);
-        leftAnswer.gameObject.SetActive(true);
-        rightAnswer.gameObject.SetActive(true);
-
         questions_label.text = questions.ToString();
-        randomSide = Random.Range(0, 2);
 
+        answerParameter.leftAnswer.gameObject.SetActive(true);
+        answerParameter.rightAnswer.gameObject.SetActive(true);
+
+        randomSide = Random.Range(0, 2);
         if (randomSide == 0)
         {
-            leftAnswer.text = correctAnswer.ToString();
-            rightAnswer.text = wrongAnswer.ToString();
+            answerParameter.leftAnswer.text = correctAnswer.ToString();
+            answerParameter.rightAnswer.text = wrongAnswer.ToString();
         }
         else
         {
-            leftAnswer.text = wrongAnswer.ToString();
-            rightAnswer.text = correctAnswer.ToString();
+            answerParameter.leftAnswer.text = wrongAnswer.ToString();
+            answerParameter.rightAnswer.text = correctAnswer.ToString();
         }
     }
 }

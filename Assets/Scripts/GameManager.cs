@@ -92,7 +92,7 @@ public class GameManager : MonoBehaviour
     IEnumerator AnswerTimer(float seconds)
     {
         dialogueManager.GenerateQuestion();
-        dialogueManager.DisplayAnswers();
+        dialogueManager.DisplayAnswers(spawnManager.SpawnQuestions());
 
         //Update progress bar
         float timeRemaining = seconds;
@@ -121,6 +121,7 @@ public class GameManager : MonoBehaviour
         else if (!CheckAnswer() && player.health > 1)
         {
             player.health --;
+            CorrectAnswer(); //Repeat questionnaire cycle
         }
     }
 

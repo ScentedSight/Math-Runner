@@ -13,13 +13,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float gravity = -40f;
     [SerializeField] private GameManager gameManager;
 
-    void Start()
-    {
-        Physics.gravity = new Vector3(0f, gravity, 0f); //Custom gravity to configure jump's curve
-    }
-
     void Awake()
     {
+        Physics.gravity = new Vector3(0f, gravity, 0f); //Custom gravity to configure jump's curve
         rb = GetComponent<Rigidbody>();
         // Player initially wants to remain wherever it currently is.
         targetX = transform.position.x;

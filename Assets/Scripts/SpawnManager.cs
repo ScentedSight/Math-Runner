@@ -3,10 +3,18 @@ using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
 {
-    [SerializeField] private float barricadeSpawnRate = 5f;
-    [SerializeField] private float powerUpSpawnRate = 30f;
+    private float barricadeSpawnRate = 5f;
+    private float powerUpSpawnRate = 30f;
     public GameObject barricadePrefab;
     public GameObject powerUpPrefab;
+    public GameObject answerPrefab;
+
+    public DialogueManager SpawnQuestions()
+    {
+        GameObject ansPrefab = Instantiate(answerPrefab, answerPrefab.transform.position, answerPrefab.transform.rotation);
+        DialogueManager answerParameter = ansPrefab.GetComponent<DialogueManager>();
+        return answerParameter;
+    }
 
     private void SpawnBarricade()
     {
@@ -25,7 +33,7 @@ public class SpawnManager : MonoBehaviour
         Vector3 spawnPosition = new Vector3(spawnX, transform.position.y, transform.position.z);
 
         // Check if something is already at this location
-        if (!Physics.CheckBox(spawnPosition,new Vector3(1f, 1f, 5f)))
+        if (!Physics.CheckBox(spawnPosition, new Vector3(1f, 1f, 5f)))
         {
             Instantiate(barricadePrefab, spawnPosition, barricadePrefab.transform.rotation);
         }
